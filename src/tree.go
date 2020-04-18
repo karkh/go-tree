@@ -4,15 +4,19 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 )
 
 func main() {
-	fmt.Printf("hello world!")
+	fmt.Println("Tree kek")
 	args := os.Args[1:]
-	fmt.Println(args)
-	files, err := ioutil.ReadDir("C:\\")
-	if err != nil {
-		panic(err)
+	path, pathError := filepath.Abs(args[0])
+	if pathError != nil {
+		panic(pathError)
+	}
+	files, dirErr := ioutil.ReadDir(path)
+	if dirErr != nil {
+		panic(dirErr)
 	}
 	for _, file := range files {
 		fmt.Println(file.Name())
