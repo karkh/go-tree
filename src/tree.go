@@ -14,11 +14,25 @@ func main() {
 	if pathError != nil {
 		panic(pathError)
 	}
-	files, dirErr := ioutil.ReadDir(path)
+	recursiveDir(path)
+
+}
+
+func recursiveDir(dir string) {
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		fmt.Println("path is not exist")
+	}
+	files, dirErr := ioutil.ReadDir(dir)
 	if dirErr != nil {
 		panic(dirErr)
 	}
 	for _, file := range files {
+		if file.IsDir() {
+			fmt.Print("d ")
+			// recursiveDir(file.Name())
+		} else {
+			fmt.Print("f ")
+		}
 		fmt.Println(file.Name())
 	}
 }
