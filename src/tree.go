@@ -16,13 +16,13 @@ func main() {
 	if len(args) == 0 {
 		cwd, err := os.Getwd()
 		if err != nil {
-			panic("cwd error ")
+			log.Fatal(err)
 		}
 		path = cwd
 	} else {
-		absPath, pathError := filepath.Abs(args[0])
-		if pathError != nil {
-			log.Fatal(pathError)
+		absPath, err := filepath.Abs(args[0])
+		if err != nil {
+			log.Fatal(err)
 		}
 		path = absPath
 	}
