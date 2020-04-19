@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -10,19 +11,30 @@ import (
 func main() {
 	fmt.Println("Tree kek")
 	args := os.Args[1:]
-	path, pathError := filepath.Abs(args[0])
-	if pathError != nil {
-		panic(pathError)
+	fmt.Println("lentgh", len(args))
+	var path string
+	if len(args) == 0 {
+		cwd, err := os.Getwd()
+		if err != nil {
+			panic("cwd error ")
+		}
+		path = cwd
+	} else {
+		absPath, pathError := filepath.Abs(args[0])
+		if pathError != nil {
+			log.Fatal(pathError)
+		}
+		path = absPath
 	}
 	recursiveDir(path, "", 0)
-
 }
 
 func recursiveDir(dir string, file string, counter int32) {
 	intCounter := counter
 	fullPath := filepath.Join(dir, file)
 	if _, err := os.Stat(fullPath); os.IsNotExist(err) {
-		fmt.Println("path is not exist")
+		fmt.Println(fullPath, " path is not exist")
+		return
 	}
 	files, dirErr := ioutil.ReadDir(fullPath)
 	if dirErr != nil {
